@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#b4502f" />
+    <meta
+      name="description"
+      content="我想静静：一个无需联网、轻轻敲木鱼的静心小游戏。"
+    />
+    <title>我想静静 · 敲木鱼</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="page-shell">
+      <div class="cloud cloud-left" aria-hidden="true"></div>
+      <div class="cloud cloud-right" aria-hidden="true"></div>
+      <div class="moon" aria-hidden="true"></div>
+
+      <section class="game-card" aria-labelledby="game-title">
+        <header class="game-header">
+          <p class="eyebrow">放下杂念，听见自己</p>
+          <h1 id="game-title">我想静静</h1>
+          <p class="subtitle">轻敲木鱼，让心慢下来</p>
+        </header>
+
+        <div class="merit-board" aria-live="polite" aria-atomic="true">
+          <span>今日功德</span>
+          <strong id="merit-count">0</strong>
+          <small>声</small>
+        </div>
+
+        <div class="fish-stage" id="fish-stage" data-model="classic">
+          <div class="halo halo-one" aria-hidden="true"></div>
+          <div class="halo halo-two" aria-hidden="true"></div>
+          <button
+            class="wood-fish"
+            id="wood-fish"
+            type="button"
+            aria-label="敲一下木鱼，增加一声功德"
+          >
+            <span class="fish-cap" aria-hidden="true"></span>
+            <span class="fish-body" aria-hidden="true">
+              <span class="fish-grain grain-one"></span>
+              <span class="fish-grain grain-two"></span>
+              <span class="fish-opening"></span>
+              <span class="photo-frame" id="photo-frame" aria-hidden="true">
+                <img id="photo-overlay" alt="" />
+              </span>
+            </span>
+            <span class="fish-side side-left" aria-hidden="true"></span>
+            <span class="fish-side side-right" aria-hidden="true"></span>
+            <span class="fish-base" aria-hidden="true"></span>
+            <span class="fish-mallet" aria-hidden="true">
+              <span></span>
+            </span>
+          </button>
+          <div class="feedback-layer" id="feedback-layer" aria-hidden="true"></div>
+        </div>
+
+        <p class="hint">点击木鱼，或按 <kbd>空格</kbd> / <kbd>Enter</kbd> 轻敲一下</p>
+
+        <section class="play-controls" aria-label="游戏设置">
+          <label class="sound-picker" for="sound-select">
+            <span>敲击音效</span>
+            <select id="sound-select" aria-label="选择敲击音效">
+              <option value="wood">木鱼清音</option>
+              <option value="frog">池畔蛙鸣</option>
+              <option value="chime">山寺风铃</option>
+            </select>
+          </label>
+          <button class="sound-toggle" id="sound-toggle" type="button" aria-pressed="true">
+            <span class="sound-icon" aria-hidden="true">♬</span>
+            <span id="sound-label">音效已开启</span>
+          </button>
+        </section>
+
+        <section class="photo-play" aria-label="照片木鱼趣味玩法">
+          <label class="photo-upload" for="photo-input">
+            <span aria-hidden="true">◎</span> 贴一张照片到木鱼
+          </label>
+          <input id="photo-input" type="file" accept="image/png,image/jpeg,image/webp,image/gif" />
+          <button class="photo-clear" id="photo-clear" type="button" hidden>取下照片</button>
+          <small id="photo-tip">图片仅在本次浏览器会话使用，不上传。</small>
+          <label class="worry-input" for="worry-input">
+            <span>写下一个烦恼（可选）</span>
+            <input id="worry-input" maxlength="24" placeholder="例如：不再为今天的会议焦虑" />
+          </label>
+        </section>
+
+        <section class="stillness-level" aria-label="静心进度">
+          <div class="level-heading"><span id="level-name">今日静心 · 108 声</span><small id="level-progress">0 / 108</small></div>
+          <div class="level-track" aria-hidden="true"><span id="level-fill"></span></div>
+          <p id="level-note">完成 108 声，给今天的烦恼一个“已放下”。</p>
+        </section>
+
+        <section class="rhythm-mode" aria-label="节奏连击玩法">
+          <div>
+            <span class="rhythm-eyebrow">木鱼回响</span>
+            <strong id="combo-count">0 连</strong>
+            <small id="rhythm-status">连续敲击 3 声，唤醒木鱼回响</small>
+          </div>
+          <div class="rhythm-dots" id="rhythm-dots" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+        </section>
+
+        <section class="personal-progress" aria-label="个人静心记录">
+          <div><span>累计功德</span><strong id="total-count">0</strong></div>
+          <div><span>坚持天数</span><strong id="streak-count">0</strong></div>
+          <div><span>今日完成</span><strong id="completion-rate">0%</strong></div>
+        </section>
+
+        <section class="achievement-board" aria-label="静心印记">
+          <div class="achievement-heading"><span>静心印记</span><small id="achievement-count">0 / 4</small></div>
+          <div class="achievement-list" id="achievement-list"></div>
+        </section>
+
+        <button class="share-card" id="share-card" type="button" disabled>完成 108 声后生成静心卡</button>
+
+        <section class="temple-stats" aria-label="道场数据">
+          <span>道场数据：<b id="online-count">0</b> 人同修 · 今日 <b id="visitor-count">0</b> 位来客 · 累计 <b id="global-merit-count">0</b> 声</span>
+        </section>
+
+        <aside class="wisdom-toast" id="wisdom-toast" role="status" aria-live="polite" aria-hidden="true">
+          <span class="toast-seal">静</span>
+          <p id="wisdom-text"></p>
+        </aside>
+      </section>
+
+      <p class="local-note">
+        个人功德保存在这台设备；道场数据需启用统计服务后实时更新。蛙鸣音效：
+        <a href="https://commons.wikimedia.org/wiki/File:Single_Frog_Croak.oga" target="_blank" rel="noopener">Single Frog Croak（CC BY-SA 4.0）</a>
+      </p>
+    </main>
+    <section class="release-modal" id="release-modal" role="dialog" aria-modal="true" aria-labelledby="release-title" hidden>
+      <div class="release-card">
+        <span class="release-mark">放</span>
+        <p class="release-kicker">今日静心已圆满</p>
+        <h2 id="release-title">已放下</h2>
+        <p id="release-text">愿此刻的心事，随木鱼声慢慢远去。</p>
+        <button id="release-close" type="button">收下此刻</button>
+      </div>
+    </section>
+    <audio id="frog-audio" preload="auto" src="assets/single-frog-croak.oga"></audio>
+    <script src="stats-config.js"></script>
+    <script src="game.js"></script>
+  </body>
+</html>

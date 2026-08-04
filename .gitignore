@@ -1,0 +1,17 @@
+.DS_Store
+Thumbs.db
+
+# 本地 Supabase CLI 状态与部署配置
+supabase/.temp/
+supabase/.branches/
+
+# 本地编辑器配置
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# 不提交任何本地密钥或部署环境文件
+.env
+.env.*
+!*.example

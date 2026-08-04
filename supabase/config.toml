@@ -1,0 +1,2 @@
+[functions.quiet-stats]
+verify_jwt = false
