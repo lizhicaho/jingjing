@@ -1,5 +1,7 @@
 # 我想静静
 
+> 我想静静，不想理你。
+
 一个轻量、无框架的敲木鱼静心小游戏。点击木鱼，或按 `Space` / `Enter`，给自己留一点安静。
 
 ![技术栈](https://img.shields.io/badge/HTML-CSS-JavaScript-b4502f?style=flat-square)
