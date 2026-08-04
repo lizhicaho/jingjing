@@ -1,7 +1,7 @@
 /*
- * 填入 Supabase Edge Function 地址后，底部“道场数据”会切换为真实统计。
- * 只放公开的函数 URL；绝不能将 Supabase service_role / secret key 写到前端。
+ * 生产环境使用同源轻量统计接口；接口只接收匿名设备 ID 和动作类型。
+ * 不要在前端文件放入密码、数据库连接串或其他私钥。
  */
 window.QUIET_STATS_CONFIG = {
-  endpoint: "",
+  endpoint: "/api/stats.php",
 };

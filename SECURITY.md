@@ -6,7 +6,7 @@
 
 统计服务部署时必须遵守：
 
-- `SUPABASE_SERVICE_ROLE_KEY` 只允许保存在 Edge Function 的服务端环境变量中；
-- `stats-config.js` 只能填写公开函数地址；
-- 正式环境设置 `ALLOWED_ORIGIN`，限制允许调用统计接口的网站来源；
-- 保持数据库表和函数对 `anon` / `authenticated` 角色无直接访问权限。
+- `stats.sqlite` 必须存放在网站根目录之外，例如 `/var/lib/jingjing/`；
+- PHP 接口文件应仅开放 `/api/stats.php`，不要启用全站任意 PHP 文件执行；
+- 私钥、SSH 密码、数据库文件和服务器环境文件不得提交到仓库；
+- PHP-FPM 使用的服务账户只授予统计数据目录的必要读写权限。
