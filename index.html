@@ -2,14 +2,14 @@
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <meta name="theme-color" content="#b4502f" />
     <meta
       name="description"
       content="我想静静：一个无需联网、轻轻敲木鱼的静心小游戏。"
     />
     <title>我想静静 · 敲木鱼</title>
-    <link rel="stylesheet" href="style.css?v=20260804-3" />
+    <link rel="stylesheet" href="style.css?v=20260804-10" />
   </head>
   <body>
     <main class="page-shell">
@@ -21,6 +21,7 @@
         <a class="github-corner" href="https://github.com/lizhicaho/jingjing" target="_blank" rel="noopener noreferrer" aria-label="前往 GitHub 仓库并支持一个 Star">
           <span aria-hidden="true">★</span><b>GitHub</b><small>Star</small>
         </a>
+        <section class="hero-zone">
         <header class="game-header">
           <p class="eyebrow">放下杂念，听见自己</p>
           <h1 id="game-title">我想静静</h1>
@@ -77,20 +78,9 @@
             <span id="sound-label">音效已开启</span>
           </button>
         </section>
-
-        <section class="photo-play" aria-label="照片木鱼趣味玩法">
-          <label class="photo-upload" for="photo-input">
-            <span aria-hidden="true">◎</span> 贴一张照片到木鱼
-          </label>
-          <input id="photo-input" type="file" accept="image/png,image/jpeg,image/webp,image/gif" />
-          <button class="photo-clear" id="photo-clear" type="button" hidden>取下照片</button>
-          <small id="photo-tip">图片仅在本次浏览器会话使用，不上传。</small>
-          <label class="worry-input" for="worry-input">
-            <span>写下一个烦恼（可选）</span>
-            <input id="worry-input" maxlength="24" placeholder="例如：不再为今天的会议焦虑" />
-          </label>
         </section>
 
+        <section class="info-zone">
         <section class="stillness-level" aria-label="静心进度">
           <div class="level-heading"><span id="level-name">今日静心 · 108 声</span><small id="level-progress">0 / 108</small></div>
           <div class="level-track" aria-hidden="true"><span id="level-fill"></span></div>
@@ -112,15 +102,34 @@
           <div><span>今日完成</span><strong id="completion-rate">0%</strong></div>
         </section>
 
-        <section class="achievement-board" aria-label="静心印记">
-          <div class="achievement-heading"><span>静心印记</span><small id="achievement-count">0 / 4</small></div>
-          <div class="achievement-list" id="achievement-list"></div>
-        </section>
-
-        <button class="share-card" id="share-card" type="button" disabled>完成 108 声后生成静心卡</button>
-
         <section class="temple-stats" aria-label="道场数据">
           <span>道场数据：<b id="online-count">0</b> 人同修 · 今日 <b id="visitor-count">0</b> 位来客 · 累计 <b id="global-merit-count">0</b> 声</span>
+        </section>
+
+        <details class="more-play">
+          <summary><span>更多玩法</span><small>照片 · 烦恼签 · 静心印记</small></summary>
+          <div class="more-play-content">
+            <section class="photo-play" aria-label="照片木鱼趣味玩法">
+              <label class="photo-upload" for="photo-input">
+                <span aria-hidden="true">◎</span> 贴一张照片到木鱼
+              </label>
+              <input id="photo-input" type="file" accept="image/png,image/jpeg,image/webp,image/gif" />
+              <button class="photo-clear" id="photo-clear" type="button" hidden>取下照片</button>
+              <small id="photo-tip">图片仅在本次浏览器会话使用，不上传。</small>
+              <label class="worry-input" for="worry-input">
+                <span>写下一个烦恼（可选）</span>
+                <input id="worry-input" maxlength="24" placeholder="例如：不再为今天的会议焦虑" />
+              </label>
+            </section>
+
+            <section class="achievement-board" aria-label="静心印记">
+              <div class="achievement-heading"><span>静心印记</span><small id="achievement-count">0 / 4</small></div>
+              <div class="achievement-list" id="achievement-list"></div>
+            </section>
+
+            <button class="share-card" id="share-card" type="button" disabled>完成 108 声后生成静心卡</button>
+          </div>
+        </details>
         </section>
 
         <aside class="wisdom-toast" id="wisdom-toast" role="status" aria-live="polite" aria-hidden="true">
