@@ -7,6 +7,11 @@
 ![技术栈](https://img.shields.io/badge/HTML-CSS-JavaScript-b4502f?style=flat-square)
 ![License](https://img.shields.io/badge/license-MIT-5c8f69?style=flat-square)
 
+## 在线试玩
+
+- 试玩地址：[https://jingjing.chaogeapi.online](https://jingjing.chaogeapi.online)
+- 开源仓库：[github.com/lizhicaho/jingjing](https://github.com/lizhicaho/jingjing)（欢迎 Star）
+
 ## 特性
 
 - 零构建、零框架、零默认网络请求，双击 `index.html` 即可游玩

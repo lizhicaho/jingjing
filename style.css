@@ -84,6 +84,13 @@ button { font: inherit; }
 
 .game-header { position: relative; z-index: 1; }
 
+.github-corner { position: absolute; z-index: 6; top: 17px; right: 17px; display: inline-flex; align-items: center; gap: 4px; padding: 7px 9px; color: #fff2cb; font-family: system-ui, sans-serif; font-size: 10px; line-height: 1; text-decoration: none; background: linear-gradient(135deg, #2d211d, #6d321e); border: 1px solid rgb(255 231 167 / 38%); border-radius: 999px; box-shadow: 0 5px 13px rgb(67 28 15 / 24%); transition: transform .16s ease, filter .16s ease; }
+.github-corner span { color: #ffd36b; font-size: 13px; animation: github-star 2.8s ease-in-out infinite; }
+.github-corner b { font-weight: 700; letter-spacing: .01em; }
+.github-corner small { padding-left: 4px; color: #ffd995; border-left: 1px solid rgb(255 225 156 / 32%); font-size: 9px; }
+.github-corner:hover { filter: brightness(1.12); transform: translateY(-2px) scale(1.03); }
+.github-corner:focus-visible { outline: 3px solid rgb(164 61 38 / 35%); outline-offset: 3px; }
+
 .eyebrow {
   margin: 0 0 11px;
   color: var(--red);
@@ -340,7 +347,7 @@ kbd { padding: 1px 6px; color: var(--red); font-family: system-ui, sans-serif; f
 .cloud-right { right: -75px; bottom: 13%; transform: scale(.72); }
 .moon { position: fixed; z-index: 0; top: 9%; right: 9%; width: 74px; height: 74px; pointer-events: none; background: #fff0ba; border-radius: 50%; box-shadow: 0 0 38px rgb(255 231 157 / 65%); opacity: 0; transform: translateY(-10px); transition: opacity .5s ease, transform .5s ease; }
 .local-note { position: relative; z-index: 1; max-width: min(92vw, 720px); margin: 12px auto 0; color: rgb(91 55 33 / 65%); font-size: 11px; text-align: center; }
-.local-note a { color: inherit; text-decoration-style: dotted; text-underline-offset: 2px; }
+.local-note a { color: #8e3d24; font-weight: 700; text-decoration-style: dotted; text-underline-offset: 2px; }
 
 .release-modal { position: fixed; z-index: 20; inset: 0; display: grid; place-items: center; padding: 22px; background: rgb(53 26 21 / 48%); backdrop-filter: blur(6px); }
 .release-modal[hidden] { display: none; }
@@ -370,15 +377,17 @@ body.night-mode { --ink: #f5e5be; --muted: #d7bd90; background: radial-gradient(
 @keyframes impact-mark { from { opacity: 1; transform: translate(-50%, -50%) scale(.25); } to { opacity: 0; transform: translate(-50%, -50%) scale(2.25); } }
 @keyframes stage-jolt { 25% { transform: translateX(-5px) rotate(-.6deg); } 55% { transform: translateX(4px) rotate(.5deg); } }
 @keyframes release-in { from { opacity: 0; transform: translateY(18px) scale(.93); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes github-star { 50% { filter: drop-shadow(0 0 5px #ffd36b); transform: rotate(18deg) scale(1.16); } }
 
 @media (max-width: 480px) {
   .page-shell { padding: 14px 12px 32px; }
   .game-card { min-height: 750px; padding: 34px 18px 24px; border-radius: 23px; }
-  .fish-stage { height: 292px; }
-  .wood-fish { transform: scale(.88); }
-  .fish-stage[data-model="3d"] .wood-fish { transform: scale(.88) rotateX(8deg) rotateY(-11deg); }
-  .halo { transform: rotate(15deg) scale(.88); }
-  .hint { margin-top: -10px; }
+  .github-corner { top: 13px; right: 13px; }
+  .fish-stage { height: 322px; }
+  .wood-fish { transform: scale(1.04); }
+  .fish-stage[data-model="3d"] .wood-fish { transform: scale(1.04) rotateX(8deg) rotateY(-11deg); }
+  .halo { transform: rotate(15deg) scale(1.02); }
+  .hint { margin-top: -2px; }
   .sound-picker span { display: none; }
   .wisdom-toast.is-visible { max-height: 120px; }
 }
