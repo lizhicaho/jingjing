@@ -227,7 +227,33 @@
     oscillator.stop(start + duration + 0.02);
   }
 
-  function playWoodTone(now) { tone(260, now, 0.22, "sine", 0.14, 155); }
+  function playWoodTone(now) {
+    // 三层共鸣加木质瞬态，比单一正弦音更接近实体木鱼，移动端也更清晰。
+    playWoodAttack(now);
+    tone(590, now, 0.07, "triangle", 0.12, 470);
+    tone(305, now, 0.38, "sine", 0.25, 178);
+    tone(870, now + 0.012, 0.13, "sine", 0.075, 570);
+  }
+
+  function playWoodAttack(now) {
+    const duration = 0.035;
+    const buffer = audioContext.createBuffer(1, Math.floor(audioContext.sampleRate * duration), audioContext.sampleRate);
+    const samples = buffer.getChannelData(0);
+    for (let index = 0; index < samples.length; index += 1) {
+      samples[index] = (Math.random() * 2 - 1) * (1 - index / samples.length);
+    }
+    const source = audioContext.createBufferSource();
+    const filter = audioContext.createBiquadFilter();
+    const gain = audioContext.createGain();
+    filter.type = "bandpass";
+    filter.frequency.setValueAtTime(1250, now);
+    filter.Q.setValueAtTime(1.1, now);
+    gain.gain.setValueAtTime(0.1, now);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+    source.buffer = buffer;
+    source.connect(filter).connect(gain).connect(audioContext.destination);
+    source.start(now);
+  }
   function playFrogSound(now) {
     try {
       window.clearTimeout(frogStopTimer);
