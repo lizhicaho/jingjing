@@ -6,6 +6,8 @@
   const DAILY_GOAL = 108;
   const STATS_ENDPOINT = window.QUIET_STATS_CONFIG?.endpoint?.trim() || "";
   const fish = document.querySelector("#wood-fish");
+  const gameCard = document.querySelector(".game-card");
+  const morePlay = document.querySelector(".more-play");
   const stage = document.querySelector("#fish-stage");
   const feedbackLayer = document.querySelector("#feedback-layer");
   const meritCount = document.querySelector("#merit-count");
@@ -455,6 +457,9 @@
   worryInput.addEventListener("input", () => { state.worry = worryInput.value; saveState(); });
   releaseClose.addEventListener("click", () => { releaseModal.hidden = true; fish.focus(); });
   shareCard.addEventListener("click", saveShareCard);
+  morePlay.addEventListener("toggle", () => {
+    gameCard.classList.toggle("is-more-open", morePlay.open);
+  });
 
   updateTheme();
   updateDisplay();
