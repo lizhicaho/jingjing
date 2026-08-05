@@ -2,150 +2,77 @@
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#b4502f" />
-    <meta
-      name="description"
-      content="我想静静：一个无需联网、轻轻敲木鱼的静心小游戏。"
-    />
-    <title>我想静静 · 敲木鱼</title>
-    <link rel="stylesheet" href="style.css?v=20260804-3" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <meta name="theme-color" content="#1E1B1A" />
+    <meta name="description" content="我想静静：轻触木鱼，给忙碌生活留几分钟安静。" />
+    <meta property="og:title" content="我想静静" />
+    <meta property="og:description" content="轻触木鱼，开始几分钟安静。" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary" />
+    <link rel="icon" href="assets/quiet.svg" type="image/svg+xml" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <title>我想静静</title>
+    <link rel="stylesheet" href="style.css?v=20260805-v2" />
+    <link rel="stylesheet" href="v2-layout.css?v=20260805-3" />
   </head>
   <body>
-    <main class="page-shell">
-      <div class="cloud cloud-left" aria-hidden="true"></div>
-      <div class="cloud cloud-right" aria-hidden="true"></div>
-      <div class="moon" aria-hidden="true"></div>
+    <main class="zen-room" aria-labelledby="game-title">
+      <a class="source-link" href="https://github.com/lizhicaho/jingjing" target="_blank" rel="noopener noreferrer" aria-label="查看 GitHub 源码">GitHub ↗</a>
 
-      <section class="game-card" aria-labelledby="game-title">
-        <a class="github-corner" href="https://github.com/lizhicaho/jingjing" target="_blank" rel="noopener noreferrer" aria-label="前往 GitHub 仓库并支持一个 Star">
-          <span aria-hidden="true">★</span><b>GitHub</b><small>Star</small>
-        </a>
-        <header class="game-header">
-          <p class="eyebrow">放下杂念，听见自己</p>
-          <h1 id="game-title">我想静静</h1>
-          <p class="subtitle">轻敲木鱼，让心慢下来</p>
-        </header>
+      <header class="quiet-header">
+        <h1 id="game-title">我想静静</h1>
+        <p>今日静心</p>
+        <div class="quiet-count" aria-live="polite" aria-atomic="true"><strong id="merit-count">0</strong><span>声</span></div>
+      </header>
 
-        <div class="merit-board" aria-live="polite" aria-atomic="true">
-          <span>今日功德</span>
-          <strong id="merit-count">0</strong>
-          <small>声</small>
-        </div>
-
+      <section class="woodfish-ritual" aria-label="敲木鱼">
         <div class="fish-stage" id="fish-stage" data-model="classic">
-          <div class="halo halo-one" aria-hidden="true"></div>
-          <div class="halo halo-two" aria-hidden="true"></div>
-          <button
-            class="wood-fish"
-            id="wood-fish"
-            type="button"
-            aria-label="敲一下木鱼，增加一声功德"
-          >
+          <div class="halo halo-one" aria-hidden="true"></div><div class="halo halo-two" aria-hidden="true"></div><div class="halo halo-three" aria-hidden="true"></div>
+          <button class="wood-fish" id="wood-fish" type="button" aria-label="轻触木鱼，增加一声静心">
             <span class="fish-cap" aria-hidden="true"></span>
-            <span class="fish-body" aria-hidden="true">
-              <span class="fish-grain grain-one"></span>
-              <span class="fish-grain grain-two"></span>
-              <span class="fish-opening"></span>
-              <span class="photo-frame" id="photo-frame" aria-hidden="true">
-                <img id="photo-overlay" alt="" />
-              </span>
-            </span>
-            <span class="fish-side side-left" aria-hidden="true"></span>
-            <span class="fish-side side-right" aria-hidden="true"></span>
-            <span class="fish-base" aria-hidden="true"></span>
-            <span class="fish-mallet" aria-hidden="true">
-              <span></span>
-            </span>
+            <span class="fish-body" aria-hidden="true"><span class="fish-grain grain-one"></span><span class="fish-grain grain-two"></span><span class="fish-opening"></span><span class="photo-frame" id="photo-frame"><img id="photo-overlay" alt="" /></span></span>
+            <span class="fish-side side-left" aria-hidden="true"></span><span class="fish-side side-right" aria-hidden="true"></span><span class="fish-base" aria-hidden="true"></span>
+            <span class="fish-mallet" aria-hidden="true"><span></span></span>
           </button>
           <div class="feedback-layer" id="feedback-layer" aria-hidden="true"></div>
         </div>
-
-        <p class="hint">点击木鱼，或按 <kbd>空格</kbd> / <kbd>Enter</kbd> 轻敲一下</p>
-
-        <section class="play-controls" aria-label="游戏设置">
-          <label class="sound-picker" for="sound-select">
-            <span>敲击音效</span>
-            <select id="sound-select" aria-label="选择敲击音效">
-              <option value="wood">木鱼清音</option>
-              <option value="frog">池畔蛙鸣</option>
-              <option value="chime">山寺风铃</option>
-            </select>
-          </label>
-          <button class="sound-toggle" id="sound-toggle" type="button" aria-pressed="true">
-            <span class="sound-icon" aria-hidden="true">♬</span>
-            <span id="sound-label">音效已开启</span>
-          </button>
-        </section>
-
-        <section class="photo-play" aria-label="照片木鱼趣味玩法">
-          <label class="photo-upload" for="photo-input">
-            <span aria-hidden="true">◎</span> 贴一张照片到木鱼
-          </label>
-          <input id="photo-input" type="file" accept="image/png,image/jpeg,image/webp,image/gif" />
-          <button class="photo-clear" id="photo-clear" type="button" hidden>取下照片</button>
-          <small id="photo-tip">图片仅在本次浏览器会话使用，不上传。</small>
-          <label class="worry-input" for="worry-input">
-            <span>写下一个烦恼（可选）</span>
-            <input id="worry-input" maxlength="24" placeholder="例如：不再为今天的会议焦虑" />
-          </label>
-        </section>
-
-        <section class="stillness-level" aria-label="静心进度">
-          <div class="level-heading"><span id="level-name">今日静心 · 108 声</span><small id="level-progress">0 / 108</small></div>
-          <div class="level-track" aria-hidden="true"><span id="level-fill"></span></div>
-          <p id="level-note">完成 108 声，给今天的烦恼一个“已放下”。</p>
-        </section>
-
-        <section class="rhythm-mode" aria-label="节奏连击玩法">
-          <div>
-            <span class="rhythm-eyebrow">木鱼回响</span>
-            <strong id="combo-count">0 连</strong>
-            <small id="rhythm-status">连续敲击 3 声，唤醒木鱼回响</small>
-          </div>
-          <div class="rhythm-dots" id="rhythm-dots" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
-        </section>
-
-        <section class="personal-progress" aria-label="个人静心记录">
-          <div><span>累计功德</span><strong id="total-count">0</strong></div>
-          <div><span>坚持天数</span><strong id="streak-count">0</strong></div>
-          <div><span>今日完成</span><strong id="completion-rate">0%</strong></div>
-        </section>
-
-        <section class="achievement-board" aria-label="静心印记">
-          <div class="achievement-heading"><span>静心印记</span><small id="achievement-count">0 / 4</small></div>
-          <div class="achievement-list" id="achievement-list"></div>
-        </section>
-
-        <button class="share-card" id="share-card" type="button" disabled>完成 108 声后生成静心卡</button>
-
-        <section class="temple-stats" aria-label="道场数据">
-          <span>道场数据：<b id="online-count">0</b> 人同修 · 今日 <b id="visitor-count">0</b> 位来客 · 累计 <b id="global-merit-count">0</b> 声</span>
-        </section>
-
-        <aside class="wisdom-toast" id="wisdom-toast" role="status" aria-live="polite" aria-hidden="true">
-          <span class="toast-seal">静</span>
-          <p id="wisdom-text"></p>
-        </aside>
+        <p class="touch-hint">轻触木鱼开始静心</p>
       </section>
 
-      <p class="local-note">
-        个人功德保存在这台设备；道场数据需启用统计服务后实时更新。<br />
-        蛙鸣音效：
-        <a href="https://commons.wikimedia.org/wiki/File:Single_Frog_Croak.oga" target="_blank" rel="noopener">Single Frog Croak（CC BY-SA 4.0）</a>
-      </p>
+      <section class="today-progress" aria-label="今日进度">
+        <div><span id="level-progress">0 / 108</span><span id="level-name" hidden>今日静心</span></div>
+        <div class="level-track" aria-hidden="true"><span id="level-fill"></span></div>
+        <p id="level-note" hidden></p>
+      </section>
+
+      <p class="home-temple-line" aria-label="静心道场实时数据" style="position:absolute;bottom:34px;left:0;display:flex;gap:7px;margin:0;color:#8E8A84;font-size:12px;white-space:nowrap"><span style="color:#F6F4EF">静心道场</span><span>此刻 <b id="online-count" style="color:#D78B47">0</b> 人</span><span>·</span><span>来过 <b id="visitor-count" style="color:#D78B47">0</b> 人</span><span>·</span><span>回响 <b id="global-merit-count" style="color:#D78B47">0</b> 声</span></p>
+
+      <details class="more-play" id="more-play">
+        <summary><span>更多</span><i aria-hidden="true">⌃</i></summary>
+        <div class="more-sheet" role="dialog" aria-label="更多静心功能">
+          <div class="sheet-heading"><span>更多</span><button class="sheet-close" type="button" aria-label="关闭更多功能">×</button></div>
+          <nav class="feature-list" aria-label="静心功能">
+            <button type="button" data-panel="photo-panel"><span>📷</span>照片木鱼<i>›</i></button>
+            <button type="button" data-panel="worry-panel"><span>📝</span>烦恼签<i>›</i></button>
+            <button type="button" data-panel="imprint-panel"><span>🌿</span>静心印记<i>›</i></button>
+            <button type="button" data-panel="temple-panel"><span>📊</span>静心道场<i>›</i></button>
+            <button type="button" data-panel="settings-panel"><span>⚙</span>设置<i>›</i></button>
+          </nav>
+
+          <section class="more-panel" id="photo-panel" hidden><button class="panel-back" type="button">‹ 返回</button><h2>照片木鱼</h2><p>把一张照片轻轻放进木鱼，不上传、不保存。</p><label class="photo-upload" for="photo-input">选择照片</label><input id="photo-input" type="file" accept="image/png,image/jpeg,image/webp,image/gif" /><button class="photo-clear" id="photo-clear" type="button" hidden>移除照片</button><small id="photo-tip">图片仅在当前浏览器会话中使用。</small></section>
+          <section class="more-panel" id="worry-panel" hidden><button class="panel-back" type="button">‹ 返回</button><h2>烦恼签</h2><p>写下一件此刻挂念的事，交给木鱼。</p><label class="worry-input" for="worry-input"><textarea id="worry-input" maxlength="24" placeholder="例如：不再为今天的会议焦虑"></textarea></label><p class="panel-note">完成 108 声后，它会随这一刻慢慢放下。</p></section>
+          <section class="more-panel" id="imprint-panel" hidden><button class="panel-back" type="button">‹ 返回</button><h2>静心印记</h2><div class="achievement-board"><div class="achievement-heading"><span>与你走过的片刻</span><small id="achievement-count">0 / 4</small></div><div class="achievement-list" id="achievement-list"></div></div><section class="rhythm-mode" aria-label="节奏连击"><strong id="combo-count">0 连</strong><small id="rhythm-status">连续敲击，唤醒木鱼回响</small><div class="rhythm-dots" id="rhythm-dots" aria-hidden="true"><i></i><i></i><i></i><i></i></div></section><section class="personal-progress" aria-label="个人记录"><div><span>累计静心</span><strong id="total-count">0</strong></div><div><span>坚持天数</span><strong id="streak-count">0</strong></div><div><span>今日完成</span><strong id="completion-rate">0%</strong></div></section><button class="share-card" id="share-card" type="button" disabled>完成 108 声后保存静心卡</button></section>
+          <section class="more-panel" id="temple-panel" hidden><button class="panel-back" type="button">‹ 返回</button><h2>静心道场</h2><p>有人和你一起，把片刻还给自己。</p><div class="temple-stats"><div><small>已有静心者</small><strong data-stat="visitors">0</strong><em>人</em></div><div><small>木鱼回响</small><strong data-stat="merits">0</strong><em>声</em></div><div><small>此刻正在静心</small><strong data-stat="online">0</strong><em>人</em></div><div><small>累计陪伴</small><strong data-stat="hours">0</strong><em>小时</em></div></div></section>
+          <section class="more-panel" id="settings-panel" hidden><button class="panel-back" type="button">‹ 返回</button><h2>设置</h2><label class="setting-row" for="sound-select"><span>声音</span><select id="sound-select"><option value="wood">木鱼</option><option value="frog">蛙鸣</option><option value="chime">风铃</option></select></label><button class="sound-toggle setting-row" id="sound-toggle" type="button" aria-pressed="true"><span>音效</span><b id="sound-label">已开启</b></button><nav class="legal-links" aria-label="网站说明"><a href="privacy.html">隐私政策 <i>›</i></a><a href="terms.html">服务条款 <i>›</i></a><a href="accessibility.html">无障碍声明 <i>›</i></a><a href="changelog.html">更新日志 <i>›</i></a><a href="https://github.com/lizhicaho/jingjing/issues" target="_blank" rel="noopener">意见反馈 <i>↗</i></a></nav></section>
+        </div>
+      </details>
+
+      <aside class="wisdom-toast" id="wisdom-toast" role="status" aria-live="polite" aria-hidden="true"><span>静</span><p id="wisdom-text"></p></aside>
     </main>
-    <section class="release-modal" id="release-modal" role="dialog" aria-modal="true" aria-labelledby="release-title" hidden>
-      <div class="release-card">
-        <span class="release-mark">放</span>
-        <p class="release-kicker">今日静心已圆满</p>
-        <h2 id="release-title">已放下</h2>
-        <p id="release-text">愿此刻的心事，随木鱼声慢慢远去。</p>
-        <button id="release-close" type="button">收下此刻</button>
-      </div>
-    </section>
+
+    <footer class="site-footer"><strong>我想静静</strong><p>让每一次敲击，都成为一次短暂的放松。</p><nav><span>🔒 Protected by HTTPS</span><a href="https://github.com/lizhicaho/jingjing" target="_blank" rel="noopener">⭐ Star on GitHub</a><a href="https://github.com/lizhicaho/jingjing/issues" target="_blank" rel="noopener">💬 Feedback</a><a href="https://github.com/lizhicaho/jingjing/releases" target="_blank" rel="noopener">📄 更新日志</a></nav><small>© 2026 我想静静 · v1.0.0</small></footer>
+    <section class="release-modal" id="release-modal" role="dialog" aria-modal="true" aria-labelledby="release-title" hidden><div class="release-card"><span>放</span><p>今日静心已圆满</p><h2 id="release-title">已放下</h2><p id="release-text">愿此刻的心事，随木鱼声慢慢远去。</p><button id="release-close" type="button">收下此刻</button></div></section>
     <audio id="frog-audio" preload="auto" src="assets/single-frog-croak.oga"></audio>
-    <script src="stats-config.js"></script>
-    <script src="game.js?v=20260804-2"></script>
+    <script src="stats-config.js"></script><script src="game.js?v=20260805-v3"></script>
   </body>
 </html>

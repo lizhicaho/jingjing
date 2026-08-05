@@ -6,6 +6,8 @@
   const DAILY_GOAL = 108;
   const STATS_ENDPOINT = window.QUIET_STATS_CONFIG?.endpoint?.trim() || "";
   const fish = document.querySelector("#wood-fish");
+  const gameCard = document.querySelector(".zen-room");
+  const morePlay = document.querySelector(".more-play");
   const stage = document.querySelector("#fish-stage");
   const feedbackLayer = document.querySelector("#feedback-layer");
   const meritCount = document.querySelector("#merit-count");
@@ -15,6 +17,7 @@
   const onlineCount = document.querySelector("#online-count");
   const visitorCount = document.querySelector("#visitor-count");
   const globalMeritCount = document.querySelector("#global-merit-count");
+  const companionHours = document.querySelector("#companion-hours");
   const levelName = document.querySelector("#level-name");
   const levelProgress = document.querySelector("#level-progress");
   const levelFill = document.querySelector("#level-fill");
@@ -304,6 +307,11 @@
     onlineCount.textContent = formatNumber(stats.online || 0);
     visitorCount.textContent = formatNumber(stats.visitors || 0);
     globalMeritCount.textContent = formatNumber(stats.merits || 0);
+    companionHours.textContent = formatNumber(Math.floor((stats.merits || 0) / 108));
+    document.querySelectorAll('[data-stat="online"]').forEach((node) => { node.textContent = formatNumber(stats.online || 0); });
+    document.querySelectorAll('[data-stat="visitors"]').forEach((node) => { node.textContent = formatNumber(stats.visitors || 0); });
+    document.querySelectorAll('[data-stat="merits"]').forEach((node) => { node.textContent = formatNumber(stats.merits || 0); });
+    document.querySelectorAll('[data-stat="hours"]').forEach((node) => { node.textContent = formatNumber(Math.floor((stats.merits || 0) / 108)); });
   }
 
   async function syncTempleStats(action) {
@@ -356,6 +364,9 @@
     stage.classList.remove("is-impact");
     void stage.offsetWidth;
     stage.classList.add("is-impact");
+    gameCard.classList.remove("is-resonating");
+    void gameCard.offsetWidth;
+    gameCard.classList.add("is-resonating");
   }
 
   function updateSoundButton() {
@@ -415,6 +426,9 @@
   }
 
   fish.addEventListener("click", knock);
+  document.addEventListener("dblclick", (event) => {
+    if (window.matchMedia("(max-width: 700px)").matches) event.preventDefault();
+  }, { passive: false });
   document.addEventListener("keydown", (event) => {
     const target = event.target;
     const isControl = target instanceof HTMLElement && (target.closest("button, input, textarea, select, a") || target.isContentEditable);
@@ -455,6 +469,18 @@
   worryInput.addEventListener("input", () => { state.worry = worryInput.value; saveState(); });
   releaseClose.addEventListener("click", () => { releaseModal.hidden = true; fish.focus(); });
   shareCard.addEventListener("click", saveShareCard);
+  morePlay.addEventListener("toggle", () => {
+    gameCard.classList.toggle("is-more-open", morePlay.open);
+  });
+  document.querySelectorAll("[data-panel]").forEach((trigger) => trigger.addEventListener("click", () => {
+    document.querySelectorAll(".more-panel").forEach((panel) => { panel.hidden = panel.id !== trigger.dataset.panel; });
+    document.querySelector(".feature-list").hidden = true;
+  }));
+  document.querySelectorAll(".panel-back").forEach((button) => button.addEventListener("click", () => {
+    document.querySelectorAll(".more-panel").forEach((panel) => { panel.hidden = true; });
+    document.querySelector(".feature-list").hidden = false;
+  }));
+  document.querySelector(".sheet-close").addEventListener("click", () => { morePlay.open = false; });
 
   updateTheme();
   updateDisplay();
