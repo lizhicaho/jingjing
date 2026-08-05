@@ -1,0 +1,119 @@
+/* V2 canvas layout: keep the room calm and prevent viewport scrolling. */
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  touch-action: manipulation;
+}
+
+.zen-room {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  width: 100%;
+  min-height: 0;
+  padding: 56px max(40px, calc((100vw - 820px) / 2)) 72px;
+}
+
+.woodfish-ritual {
+  width: min(100%, 560px);
+  justify-self: center;
+}
+
+.today-progress {
+  width: min(100%, 520px);
+}
+
+.home-temple-line {
+  z-index: 4;
+  bottom: 28px !important;
+  left: max(40px, calc((100vw - 820px) / 2)) !important;
+  max-width: calc(100vw - 190px);
+  padding: 8px 10px;
+  overflow: hidden;
+  background: rgb(30 27 26 / 72%);
+  border-radius: 12px;
+  text-overflow: ellipsis;
+}
+
+.more-play {
+  bottom: 30px;
+  right: max(40px, calc((100vw - 820px) / 2));
+}
+
+.legal-links {
+  display: grid;
+  gap: 8px;
+  margin-top: 24px;
+}
+
+.legal-links a {
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  padding: 0 14px;
+  color: var(--muted);
+  background: rgb(246 244 239 / 4%);
+  border-radius: 16px;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.legal-links i { margin-left: auto; font-size: 18px; font-style: normal; }
+
+.site-footer {
+  display: none;
+}
+
+@media (max-width: 700px) {
+  .zen-room {
+    padding: max(48px, env(safe-area-inset-top)) 24px max(76px, env(safe-area-inset-bottom));
+  }
+
+  .home-temple-line {
+    bottom: max(16px, env(safe-area-inset-bottom)) !important;
+    left: 14px !important;
+    max-width: calc(100vw - 106px);
+    padding: 6px 8px;
+    font-size: 10px !important;
+  }
+
+  .more-play {
+    right: 18px;
+    bottom: max(16px, env(safe-area-inset-bottom));
+  }
+}
+
+.zen-room::after {
+  position: absolute;
+  z-index: -1;
+  top: 50%;
+  left: 50%;
+  width: min(70vw, 720px);
+  aspect-ratio: 1;
+  pointer-events: none;
+  border: 1px solid rgb(215 139 71 / 0%);
+  border-radius: 50%;
+  content: "";
+  transform: translate(-50%, -50%) scale(.55);
+}
+
+.zen-room.is-resonating {
+  animation: room-breathe .3s var(--ease);
+}
+
+.zen-room.is-resonating::after {
+  animation: room-ripple .42s var(--ease);
+}
+
+@keyframes room-breathe {
+  45% { filter: brightness(1.045); }
+  100% { filter: brightness(1); }
+}
+
+@keyframes room-ripple {
+  10% { border-color: rgb(215 139 71 / 16%); opacity: .8; transform: translate(-50%, -50%) scale(.55); }
+  100% { border-color: rgb(215 139 71 / 0%); opacity: 0; transform: translate(-50%, -50%) scale(1.25); }
+}
