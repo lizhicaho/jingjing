@@ -12,7 +12,7 @@
     <link rel="icon" href="assets/quiet.svg" type="image/svg+xml" />
     <link rel="manifest" href="manifest.webmanifest" />
     <title>我想静静</title>
-    <link rel="stylesheet" href="style.css?v=20260805-v2" />
+    <link rel="stylesheet" href="style.css?v=20260806-woodfish-3" />
     <link rel="stylesheet" href="v2-layout.css?v=20260805-3" />
   </head>
   <body>
@@ -21,19 +21,104 @@
 
       <header class="quiet-header">
         <h1 id="game-title">我想静静</h1>
-        <p>今日静心</p>
+        <p>轻触或按空格，随木鱼声静心</p>
+        <div class="header-action-bar">
+          <button class="shake-top-btn" id="shake-top-btn" type="button" title="摇晃手机触发敲击木鱼">📱 摇禅</button>
+        </div>
         <div class="quiet-count" aria-live="polite" aria-atomic="true"><strong id="merit-count">0</strong><span>声</span></div>
       </header>
 
       <section class="woodfish-ritual" aria-label="敲木鱼">
-        <div class="fish-stage" id="fish-stage" data-model="classic">
-          <div class="halo halo-one" aria-hidden="true"></div><div class="halo halo-two" aria-hidden="true"></div><div class="halo halo-three" aria-hidden="true"></div>
+        <div class="fish-stage" id="fish-stage">
+          <div class="halo halo-one" aria-hidden="true"></div>
+          <div class="halo halo-two" aria-hidden="true"></div>
+          <div class="halo halo-three" aria-hidden="true"></div>
+
           <button class="wood-fish" id="wood-fish" type="button" aria-label="轻触木鱼，增加一声静心">
-            <span class="fish-cap" aria-hidden="true"></span>
-            <span class="fish-body" aria-hidden="true"><span class="fish-grain grain-one"></span><span class="fish-grain grain-two"></span><span class="fish-opening"></span><span class="photo-frame" id="photo-frame"><img id="photo-overlay" alt="" /></span></span>
-            <span class="fish-side side-left" aria-hidden="true"></span><span class="fish-side side-right" aria-hidden="true"></span><span class="fish-base" aria-hidden="true"></span>
-            <span class="fish-mallet" aria-hidden="true"><span></span></span>
+            <!-- 2D 半写实古沉香木鱼矢量 SVG (无粗黑描边，传统椭圆，自然木纹与深色柔软坐垫) -->
+            <svg class="fish-svg" viewBox="0 0 400 300" aria-hidden="true">
+              <defs>
+                <!-- 沉香古木主渐变 -->
+                <radialGradient id="wood-base-grad" cx="45%" cy="40%" r="60%">
+                  <stop offset="0%" stop-color="#ab482f"/>
+                  <stop offset="45%" stop-color="#7a2d1b"/>
+                  <stop offset="85%" stop-color="#4a170d"/>
+                  <stop offset="100%" stop-color="#2c0b06"/>
+                </radialGradient>
+                <!-- 前盖与盖面高光渐变 -->
+                <linearGradient id="cap-wood-grad" x1="20%" y1="10%" x2="80%" y2="90%">
+                  <stop offset="0%" stop-color="#bf563a"/>
+                  <stop offset="50%" stop-color="#8c331d"/>
+                  <stop offset="100%" stop-color="#541b0f"/>
+                </linearGradient>
+                <!-- 发声开口深腔渐变 -->
+                <radialGradient id="cavity-grad" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#050101"/>
+                  <stop offset="80%" stop-color="#1c0704"/>
+                  <stop offset="100%" stop-color="#3b1109"/>
+                </radialGradient>
+                <!-- 紫红柔软织物坐垫渐变 -->
+                <linearGradient id="cushion-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#6e202d"/>
+                  <stop offset="50%" stop-color="#4a121c"/>
+                  <stop offset="100%" stop-color="#2a080f"/>
+                </linearGradient>
+                <!-- 柔和阴影 -->
+                <filter id="soft-shadow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feDropShadow dx="0" dy="12" stdDeviation="10" flood-color="#000000" flood-opacity="0.55"/>
+                </filter>
+              </defs>
+
+              <!-- 1. 底座深色柔软双层织物坐垫 (Velvet Soft Cushion) -->
+              <g class="cushion-group" filter="url(#soft-shadow)">
+                <ellipse cx="200" cy="245" rx="145" ry="32" fill="url(#cushion-grad)"/>
+                <ellipse cx="200" cy="240" rx="140" ry="26" fill="#581622" stroke="#802838" stroke-width="2.5"/>
+                <path d="M70,240 C130,258 270,258 330,240" fill="none" stroke="#360c13" stroke-width="3" opacity="0.6"/>
+              </g>
+
+              <!-- 2. 木鱼主体椭圆腹身 (Mahogany Body) -->
+              <g class="body-group" filter="url(#soft-shadow)">
+                <!-- 主腹体 -->
+                <ellipse cx="200" cy="155" rx="138" ry="85" fill="url(#wood-base-grad)"/>
+
+                <!-- 前背盖面 -->
+                <path d="M85,140 C110,92 290,92 315,140 C280,185 120,185 85,140 Z" fill="url(#cap-wood-grad)" opacity="0.92"/>
+
+                <!-- 自然年轮曲折木纹 (Wood Grain Lines) -->
+                <g stroke="#260804" stroke-width="1.5" fill="none" opacity="0.45">
+                  <path d="M95,145 C140,125 260,125 305,145"/>
+                  <path d="M105,160 C150,140 250,140 295,160"/>
+                  <path d="M120,175 C160,158 240,158 280,175"/>
+                  <path d="M135,190 C170,178 230,178 265,190"/>
+                </g>
+
+                <!-- 表面柔和高光弧线 (Soft Surface Specular Highlight) -->
+                <path d="M110,120 C150,102 250,102 290,120" stroke="#d97659" stroke-width="3.5" stroke-linecap="round" fill="none" opacity="0.32"/>
+
+                <!-- 腹侧祥云雕纹 (Embossed Cloud Ring) -->
+                <ellipse cx="200" cy="205" rx="90" ry="18" stroke="#d47053" stroke-width="2" fill="none" opacity="0.4"/>
+
+                <!-- 中央发声开口与双层雕唇 (Sound Slot & Beveled Lips) -->
+                <g class="sound-cavity">
+                  <ellipse cx="200" cy="148" rx="64" ry="20" fill="url(#cavity-grad)"/>
+                  <ellipse cx="200" cy="148" rx="68" ry="23" stroke="#822b17" stroke-width="3.5" fill="none"/>
+                  <ellipse cx="200" cy="148" rx="62" ry="18" stroke="#1d0603" stroke-width="2" fill="none"/>
+                </g>
+              </g>
+            </svg>
+
+            <!-- 完整保留照片木鱼节点 (Photo Overlay Frame) -->
+            <span class="photo-frame" id="photo-frame"><img id="photo-overlay" alt="" /></span>
+
+            <!-- 右上方物理击打木锤 (Top-Right Mallet) -->
+            <div class="fish-mallet" aria-hidden="true">
+              <div class="mallet-wrapper">
+                <span class="mallet-stick"></span>
+                <span class="mallet-head"></span>
+              </div>
+            </div>
           </button>
+
           <div class="feedback-layer" id="feedback-layer" aria-hidden="true"></div>
         </div>
         <p class="touch-hint">轻触木鱼开始静心</p>
@@ -50,7 +135,7 @@
       <details class="more-play" id="more-play">
         <summary><span>更多</span><i aria-hidden="true">⌃</i></summary>
         <div class="more-sheet" role="dialog" aria-label="更多静心功能">
-          <div class="sheet-heading"><span>更多</span><button class="sheet-close" type="button" aria-label="关闭更多功能">×</button></div>
+          <div class="sheet-heading"><span>玩法与设置</span><button class="sheet-close" id="sheet-close" type="button" aria-label="关闭" onclick="this.closest('details').removeAttribute('open')">✕</button></div>
           <nav class="feature-list" aria-label="静心功能">
             <button type="button" data-panel="photo-panel"><span>📷</span>照片木鱼<i>›</i></button>
             <button type="button" data-panel="worry-panel"><span>📝</span>烦恼签<i>›</i></button>
@@ -63,7 +148,7 @@
           <section class="more-panel" id="worry-panel" hidden><button class="panel-back" type="button">‹ 返回</button><h2>烦恼签</h2><p>写下一件此刻挂念的事，交给木鱼。</p><label class="worry-input" for="worry-input"><textarea id="worry-input" maxlength="24" placeholder="例如：不再为今天的会议焦虑"></textarea></label><p class="panel-note">完成 108 声后，它会随这一刻慢慢放下。</p></section>
           <section class="more-panel" id="imprint-panel" hidden><button class="panel-back" type="button">‹ 返回</button><h2>静心印记</h2><div class="achievement-board"><div class="achievement-heading"><span>与你走过的片刻</span><small id="achievement-count">0 / 4</small></div><div class="achievement-list" id="achievement-list"></div></div><section class="rhythm-mode" aria-label="节奏连击"><strong id="combo-count">0 连</strong><small id="rhythm-status">连续敲击，唤醒木鱼回响</small><div class="rhythm-dots" id="rhythm-dots" aria-hidden="true"><i></i><i></i><i></i><i></i></div></section><section class="personal-progress" aria-label="个人记录"><div><span>累计静心</span><strong id="total-count">0</strong></div><div><span>坚持天数</span><strong id="streak-count">0</strong></div><div><span>今日完成</span><strong id="completion-rate">0%</strong></div></section><button class="share-card" id="share-card" type="button" disabled>完成 108 声后保存静心卡</button></section>
           <section class="more-panel" id="temple-panel" hidden><button class="panel-back" type="button">‹ 返回</button><h2>静心道场</h2><p>有人和你一起，把片刻还给自己。</p><div class="temple-stats"><div><small>已有静心者</small><strong data-stat="visitors">0</strong><em>人</em></div><div><small>木鱼回响</small><strong data-stat="merits">0</strong><em>声</em></div><div><small>此刻正在静心</small><strong data-stat="online">0</strong><em>人</em></div><div><small>累计陪伴</small><strong data-stat="hours">0</strong><em>小时</em></div></div></section>
-          <section class="more-panel" id="settings-panel" hidden><button class="panel-back" type="button">‹ 返回</button><h2>设置</h2><label class="setting-row" for="sound-select"><span>声音</span><select id="sound-select"><option value="wood">木鱼</option><option value="frog">蛙鸣</option><option value="chime">风铃</option></select></label><button class="sound-toggle setting-row" id="sound-toggle" type="button" aria-pressed="true"><span>音效</span><b id="sound-label">已开启</b></button><nav class="legal-links" aria-label="网站说明"><a href="privacy.html">隐私政策 <i>›</i></a><a href="terms.html">服务条款 <i>›</i></a><a href="accessibility.html">无障碍声明 <i>›</i></a><a href="changelog.html">更新日志 <i>›</i></a><a href="https://github.com/lizhicaho/jingjing/issues" target="_blank" rel="noopener">意见反馈 <i>↗</i></a></nav></section>
+          <section class="more-panel" id="settings-panel" hidden><button class="panel-back" type="button">‹ 返回</button><h2>设置</h2><label class="setting-row" for="sound-select"><span>声音</span><select id="sound-select"><option value="wood">木鱼</option><option value="frog">蛙鸣</option><option value="chime">风铃</option></select></label><button class="sound-toggle setting-row" id="sound-toggle" type="button" aria-pressed="true"><span>音效</span><b id="sound-label">已开启</b></button><button class="shake-toggle setting-row" id="shake-toggle-setting" type="button" aria-pressed="false"><span>摇禅 (摇晃手机敲击)</span><b id="shake-label">已关闭</b></button><nav class="legal-links" aria-label="网站说明"><a href="privacy.html">隐私政策 <i>›</i></a><a href="terms.html">服务条款 <i>›</i></a><a href="accessibility.html">无障碍声明 <i>›</i></a><a href="changelog.html">更新日志 <i>›</i></a><a href="https://github.com/lizhicaho/jingjing/issues" target="_blank" rel="noopener">意见反馈 <i>↗</i></a></nav></section>
         </div>
       </details>
 
@@ -73,6 +158,6 @@
     <footer class="site-footer"><strong>我想静静</strong><p>让每一次敲击，都成为一次短暂的放松。</p><nav><span>🔒 Protected by HTTPS</span><a href="https://github.com/lizhicaho/jingjing" target="_blank" rel="noopener">⭐ Star on GitHub</a><a href="https://github.com/lizhicaho/jingjing/issues" target="_blank" rel="noopener">💬 Feedback</a><a href="https://github.com/lizhicaho/jingjing/releases" target="_blank" rel="noopener">📄 更新日志</a></nav><small>© 2026 我想静静 · v1.0.0</small></footer>
     <section class="release-modal" id="release-modal" role="dialog" aria-modal="true" aria-labelledby="release-title" hidden><div class="release-card"><span>放</span><p>今日静心已圆满</p><h2 id="release-title">已放下</h2><p id="release-text">愿此刻的心事，随木鱼声慢慢远去。</p><button id="release-close" type="button">收下此刻</button></div></section>
     <audio id="frog-audio" preload="auto" src="assets/single-frog-croak.oga"></audio>
-    <script src="stats-config.js"></script><script src="game.js?v=20260805-v3"></script>
+    <script src="stats-config.js"></script><script src="game.js?v=20260806-shake-speed-dynamic"></script>
   </body>
 </html>

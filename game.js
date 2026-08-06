@@ -14,6 +14,9 @@
   const soundToggle = document.querySelector("#sound-toggle");
   const soundLabel = document.querySelector("#sound-label");
   const soundSelect = document.querySelector("#sound-select");
+  const shakeTopBtn = document.querySelector("#shake-top-btn");
+  const shakeToggleSetting = document.querySelector("#shake-toggle-setting");
+  const shakeLabel = document.querySelector("#shake-label");
   const onlineCount = document.querySelector("#online-count");
   const visitorCount = document.querySelector("#visitor-count");
   const globalMeritCount = document.querySelector("#global-merit-count");
@@ -43,6 +46,7 @@
   const releaseModal = document.querySelector("#release-modal");
   const releaseText = document.querySelector("#release-text");
   const releaseClose = document.querySelector("#release-close");
+  const sheetClose = document.querySelector("#sheet-close");
 
   let state = loadState();
   let soundEnabled = loadSoundPreference();
@@ -207,8 +211,12 @@
   function playWoodSound() {
     if (!soundEnabled) return;
     try {
-      audioContext ||= new (window.AudioContext || window.webkitAudioContext)();
-      if (audioContext.state === "suspended") audioContext.resume();
+      if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioContext.state === "suspended") {
+        audioContext.resume();
+      }
       const now = audioContext.currentTime;
       if (soundType === "frog") playFrogSound(now);
       else if (soundType === "chime") playChimeSound(now);
@@ -425,7 +433,112 @@
     }, "image/png");
   }
 
-  fish.addEventListener("click", knock);
+  let shakeEnabled = loadShakePreference();
+  let lastX = 0, lastY = 0, lastZ = 0;
+  let lastShakeTime = 0;
+
+  function loadShakePreference() {
+    try { return localStorage.getItem("i-want-quiet-shake") === "on"; } catch (_) { return false; }
+  }
+
+  function updateShakeUI() {
+    if (shakeTopBtn) {
+      shakeTopBtn.classList.toggle("is-active", shakeEnabled);
+    }
+    if (shakeToggleSetting) {
+      shakeToggleSetting.setAttribute("aria-pressed", String(shakeEnabled));
+    }
+    if (shakeLabel) {
+      shakeLabel.textContent = shakeEnabled ? "已开启" : "已关闭";
+    }
+  }
+
+  function toggleShake() {
+    shakeEnabled = !shakeEnabled;
+    try { localStorage.setItem("i-want-quiet-shake", shakeEnabled ? "on" : "off"); } catch (_) { /* no-op */ }
+    updateShakeUI();
+
+    const isMobileDevice = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) || ('ontouchstart' in window);
+
+    if (shakeEnabled) {
+      requestShakePermission();
+      if (!isMobileDevice) {
+        showWisdom("【摇禅】已开启（提示：摇晃敲击属于手机手势，用手机访问体验更佳）。");
+      } else {
+        showWisdom("【摇禅】已开启：摇晃手机即可叩响木鱼，摇得越快回响越频。");
+      }
+    } else {
+      showWisdom("【摇禅】已关闭。");
+    }
+  }
+
+  function requestShakePermission() {
+    if (typeof DeviceMotionEvent !== "undefined" && typeof DeviceMotionEvent.requestPermission === "function") {
+      DeviceMotionEvent.requestPermission().then((state) => {
+        if (state !== "granted") {
+          shakeEnabled = false;
+          try { localStorage.setItem("i-want-quiet-shake", "off"); } catch (_) { /* no-op */ }
+          updateShakeUI();
+          showWisdom("未获得动作传感器权限，无法使用【摇禅】。");
+        }
+      }).catch(() => {});
+    }
+  }
+
+  function handleDeviceMotion(event) {
+    if (!shakeEnabled) return;
+    const accel = event.accelerationIncludingGravity || event.acceleration;
+    if (!accel) return;
+
+    const x = accel.x || 0;
+    const y = accel.y || 0;
+    const z = accel.z || 0;
+    const now = Date.now();
+
+    const delta = Math.abs(x - lastX) + Math.abs(y - lastY) + Math.abs(z - lastZ);
+    const timeDiff = now - lastShakeTime;
+
+    // 基础摇晃门槛
+    if (delta > 7.5) {
+      // 摇晃强度 factor (0.0 ~ 1.0)
+      const speedFactor = Math.min(1, Math.max(0, (delta - 7.5) / 32));
+      // 摇得越快剧烈，冷却时间从 280ms 压缩至 65ms，发声极速变频高响！
+      const dynamicCooldown = 280 - speedFactor * 215;
+
+      if (timeDiff >= dynamicCooldown) {
+        lastShakeTime = now;
+        knock();
+      }
+    }
+
+    lastX = x;
+    lastY = y;
+    lastZ = z;
+  }
+
+  if (window.DeviceMotionEvent) {
+    window.addEventListener("devicemotion", handleDeviceMotion, false);
+  }
+
+  const unlockAudio = () => {
+    if (!audioContext) {
+      audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if (audioContext && audioContext.state === "suspended") {
+      audioContext.resume();
+    }
+  };
+
+  window.addEventListener("pointerdown", unlockAudio, { once: true });
+  window.addEventListener("keydown", unlockAudio, { once: true });
+
+  document.addEventListener("click", (event) => {
+    // 如果点击的是特定功能性控件（按钮、下拉框、输入框、链接、更多菜单抽屉等），则不触发木鱼敲击
+    const isControl = event.target.closest("button, a, input, select, textarea, summary, details, label, .sheet-close, .more-sheet");
+    // 木鱼自身是按钮，但仍然是页面唯一允许触发敲击的按钮。
+    if (isControl && !event.target.closest("#wood-fish")) return;
+    knock();
+  });
   document.addEventListener("dblclick", (event) => {
     if (window.matchMedia("(max-width: 700px)").matches) event.preventDefault();
   }, { passive: false });
@@ -472,6 +585,29 @@
   morePlay.addEventListener("toggle", () => {
     gameCard.classList.toggle("is-more-open", morePlay.open);
   });
+  if (sheetClose) {
+    const closeMoreSheet = (event) => {
+      if (event) {
+        event.stopPropagation();
+      }
+      if (morePlay) {
+        morePlay.open = false;
+        morePlay.removeAttribute("open");
+      }
+      gameCard.classList.remove("is-more-open");
+    };
+    sheetClose.addEventListener("click", closeMoreSheet);
+    sheetClose.addEventListener("pointerdown", closeMoreSheet);
+  }
+  if (morePlay) {
+    morePlay.addEventListener("click", (event) => {
+      if (event.target === morePlay) {
+        morePlay.open = false;
+        morePlay.removeAttribute("open");
+        gameCard.classList.remove("is-more-open");
+      }
+    });
+  }
   document.querySelectorAll("[data-panel]").forEach((trigger) => trigger.addEventListener("click", () => {
     document.querySelectorAll(".more-panel").forEach((panel) => { panel.hidden = panel.id !== trigger.dataset.panel; });
     document.querySelector(".feature-list").hidden = true;
@@ -480,11 +616,26 @@
     document.querySelectorAll(".more-panel").forEach((panel) => { panel.hidden = true; });
     document.querySelector(".feature-list").hidden = false;
   }));
-  document.querySelector(".sheet-close").addEventListener("click", () => { morePlay.open = false; });
+  const handleShakeClick = (event) => {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    toggleShake();
+  };
+
+  if (shakeTopBtn) {
+    shakeTopBtn.addEventListener("click", handleShakeClick);
+    shakeTopBtn.addEventListener("pointerdown", (e) => e.stopPropagation());
+  }
+  if (shakeToggleSetting) {
+    shakeToggleSetting.addEventListener("click", handleShakeClick);
+  }
 
   updateTheme();
   updateDisplay();
   updateSoundButton();
+  updateShakeUI();
   syncTempleStats("visit");
   window.setInterval(() => syncTempleStats("heartbeat"), 30000);
   window.setInterval(() => syncTempleStats("stats"), 15000);
